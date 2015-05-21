@@ -25,7 +25,7 @@ from most.web.users.models import TaskGroup
 class Patient(models.Model):
 
     uuid = models.CharField(max_length=40, unique=True, default=pkgen)
-    task_group = models.ForeignKey(TaskGroup, related_name="patients")
+    taskgroup = models.ForeignKey(TaskGroup, related_name="patients")
     demographic_uuid = models.CharField(max_length=40, unique=True, default=pkgen)
     ehr_uuid = models.CharField(max_length=40, unique=True, default=pkgen)
     
@@ -36,8 +36,8 @@ class Patient(models.Model):
 
         return {
             'uuid': self.uuid,
-            'demographic': self.demographic_uuid,
-            'uuid': self.ehr_uuid,
+            'demographic_uuid': self.demographic_uuid,
+            'ehr_uuid': self.ehr_uuid,
         }
 
     json_dict = property(_get_json_dict)

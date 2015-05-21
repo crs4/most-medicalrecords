@@ -4,6 +4,7 @@ src/most/web/authentication
 src/most/web/utils
 src/most/web/streaming
 src/most/web/voip
+examples/provider
 libs
 
 #default configurations and logs
