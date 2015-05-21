@@ -15,4 +15,13 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^medicalrecord/', include('most.web.medicalrecord.urls')),)
+    url(r'^medicalrecord/', include('most.web.medicalrecord.urls')),
+
+    # Uncomment the next line to enable the admin:
+    url(r'^admin/', include(admin.site.urls)),
+
+    # Oauth2 urls
+    url(r'^oauth2/', include('provider.oauth2.urls', namespace='oauth2')),
+
+
+)

@@ -42,8 +42,8 @@ todo_include_todos = True
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
-html_theme = "sphinx_rtd_theme"
-html_theme_path = ["_themes", ]
+# html_theme = "sphinx_rtd_theme"
+# html_theme_path = ["_themes", ]
 # The suffix of source filenames.
 source_suffix = '.rst'
 
@@ -201,7 +201,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'pyEHR.tex', u'pyEHR Documentation',
+  ('index', 'MOST.tex', u'MOST Documentation',
    u'CRS4', 'manual'),
 ]
 
@@ -231,7 +231,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'pyehr', u'pyEHR Documentation',
+    ('index', 'most', u'MOST Documentation',
      [u'CRS4'], 1)
 ]
 
@@ -258,3 +258,9 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
+
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+if not on_rtd:  # only import and set the theme if we're building docs locally
+    import sphinx_rtd_theme
+    html_theme = 'sphinx_rtd_theme'
+    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]

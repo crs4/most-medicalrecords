@@ -7,7 +7,9 @@ devel:
 	echo "link libs"
 
 	cd src/most/web ; ln -s ../../../libs/most/src/most/web/utils utils; ln -s ../../../libs/most/src/most/web/users users ; \
-	ln -s ../../../libs/most/src/most/web/authentication authentication; 
+	ln -s ../../../libs/most/src/most/web/authentication authentication;
+
+	cd examples; ln -s ../libs/most/src/provider provider;
 
 	echo "copy settings to examples"
 	@if ! [ -d examples/most/main/settings.py ]; then cp examples/most/main/settings.py.conf examples/most/main/settings.py; fi
@@ -21,9 +23,9 @@ clean:
 		else \
 			echo "NO CHANGES - remove most repository"; \
 			rm -fr libs/most; \
-			rm -f server/most/web/utils; \
-			rm -f server/most/web/users; \
-			rm -f server/most/web/authentication; \
+			rm -f src/most/web/utils; \
+			rm -f src/most/web/users; \
+			rm -f src/most/web/authentication; \
 	fi
 
 run:
@@ -38,3 +40,6 @@ shell:
 sync:
 
 	cd examples/most; PYTHONPATH=.. python manage.py migrate
+
+dump:
+	@cd examples/most; PYTHONPATH=.. python manage.py dumpdata --exclude contenttypes --exclude auth --exclude sessions --exclude admin --natural-foreign

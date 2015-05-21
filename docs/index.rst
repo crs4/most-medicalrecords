@@ -1,19 +1,25 @@
-.. pyEHR documentation master file, created by
-   sphinx-quickstart on Thu Jan  9 11:44:46 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Welcome to MOST-medicalrecord's service documentation!
+======================================================
 
-Welcome to pyEHR's documentation!
-=================================
+Welcome to the documentation for most-medicalrecord |release|.
 
-Welcome to the documentation for pyEHR |release|.
+This library, part of the MOST project <http://github.com/crs4/most> is developed with the aim of providing a frontend REST api access to demographics and clinical data of patients. 
+
+Type of data:
+-------------
+
+* **demographics**: You can use the internal most backend for demographic data management (most-demographics) or use external systems via standard protocols calls (HL7)
+
+* **ehr data**: for clinical data management (creation, save, retrieve and query) the library use an external toolkit (pyEhr, developed by CRS4) that deals with the management of clinical data using openEHR standards.
 
 Contents:
-
+---------
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 5
 
-   http_doc/index
+   REST tutorials<http_doc/tutorial>
+   http_doc/medicalrecord
+
 
 
 Indices and tables
