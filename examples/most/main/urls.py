@@ -15,7 +15,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^medicalrecord/', include('most.web.medicalrecord.urls')),
+    url(r'^medicalrecords/', include('most.web.medicalrecords.urls')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

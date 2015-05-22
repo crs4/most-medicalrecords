@@ -26,8 +26,8 @@ class Patient(models.Model):
 
     uuid = models.CharField(max_length=40, unique=True, default=pkgen)
     taskgroup = models.ForeignKey(TaskGroup, related_name="patients")
-    demographic_uuid = models.CharField(max_length=40, unique=True, default=pkgen)
-    ehr_uuid = models.CharField(max_length=40, unique=True, default=pkgen)
+    demographic_uuid = models.CharField(max_length=40, unique=False, default=pkgen)
+    ehr_uuid = models.CharField(max_length=40, unique=False, default=pkgen)
     
     def __unicode__(self):
         return '[Patient: {uuid}]'.format(uuid=self.uuid)
