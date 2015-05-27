@@ -65,8 +65,10 @@ class RerouteRegexURLPattern(RegexURLPattern):
             # on an instancemethod
             callback = lambda request, *args, **kwargs: self.reroute_callback(request, *args, **kwargs)
             
-            if hasattr(self.callback, 'csrf_exempt'):
-                callback.csrf_exempt = self.callback.csrf_exempt
+            #FIXME: FIX FOR CRSF_EXEMPT ERROR IN DELETE
+            #if hasattr(self.callback, 'csrf_exempt'):
+                # callback.csrf_exempt = self.callback.csrf_exempt
+            callback.csrf_exempt = True
 
             # Django 1.3 compatibility
             if ResolverMatch:
