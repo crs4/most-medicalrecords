@@ -43,3 +43,7 @@ sync:
 
 dump:
 	@cd examples/most; PYTHONPATH=.. python manage.py dumpdata --exclude contenttypes --exclude auth --exclude sessions --exclude admin --natural-foreign
+
+test:
+
+	cd src/most/web/medicalrecords/; nosetests --logging-level=DEBUG -s

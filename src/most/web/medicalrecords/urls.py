@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 # MostUser API related urls
-urlpatterns = patterns('most.web.medicalrecords.views.test',
+urlpatterns = patterns('most.web.medicalrecords.views.simple',
     (r'^ping/$', 'ping'),
     (r'^ping/auth/$', 'authenticated_ping')
 )
