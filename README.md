@@ -7,3 +7,9 @@ Available framework:
 - [most-demographics](https://github.com/crs4/most-demographics)
 - [most-medicalrecords](https://github.com/crs4/most-medicalrecords)
 - [most-streaming](https://github.com/crs4/most-streaming)
+
+#Documentation#
+
+[![Documentation Status](https://readthedocs.org/projects/most-medicalrecords/badge/?version=latest)](https://readthedocs.org/projects/most-medicalrecords/?badge=latest)
+
+Documentation can be found [here](http://most-medicalrecords.readthedocs.org/en/latest/)
