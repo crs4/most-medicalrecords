@@ -7,3 +7,6 @@ install:
   make devel
   make sync
   make run
+
+script:
+  make test

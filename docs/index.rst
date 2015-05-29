@@ -17,7 +17,8 @@ Contents:
 .. toctree::
    :maxdepth: 5
 
-   REST tutorials<http_doc/tutorial>
+   REST API tutorials<http_doc/REST API.rst>
+   REST EHR API tutorials<http_doc/EHR API.rst>
    http_doc/medicalrecord
 
 
