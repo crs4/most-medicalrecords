@@ -2,6 +2,8 @@ The MOST project aims to achieve an open, modular and scalable solution for the 
 
 The project consists of a set of frameworks that deal with different aspects and technologies useful for the creation of telemedicine applications.
 
+Base Libraries:
+- [most](https://github.com/crs4/most): a collection of modules and webapp for user management, authentication, grouping ...
 Available framework:
 - [most-voip](https://github.com/crs4/most-voip): a fast and lightweight library created for handling VOIP sessions;
 - [most-demographics](https://github.com/crs4/most-demographics)
