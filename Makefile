@@ -6,10 +6,10 @@ devel:
 
 	echo "link libs"
 
-	cd src/most/web ; ln -s ../../../libs/most/src/most/web/utils utils; ln -s ../../../libs/most/src/most/web/users users ; \
-	ln -s ../../../libs/most/src/most/web/authentication authentication;
+	cd src/most/web ; ln -fs ../../../libs/most/src/most/web/utils utils; ln -fs ../../../libs/most/src/most/web/users users ; \
+	ln -fs ../../../libs/most/src/most/web/authentication authentication;
 
-	cd examples; ln -s ../libs/most/src/provider provider;
+	cd examples; ln -fs ../libs/most/src/provider provider;
 
 	echo "copy settings to examples"
 	@if ! [ -d examples/most/main/settings.py ]; then cp examples/most/main/settings.py.conf examples/most/main/settings.py; fi
@@ -17,20 +17,20 @@ devel:
 clean:
 
 	echo "clean devel mode"
-	
-	@if [[ `git -C libs/most status --porcelain` ]]; then \
-			echo "CHANGES - most repository not removed"; \
-		else \
-			echo "NO CHANGES - remove most repository"; \
-			rm -fr libs/most; \
-			rm -f src/most/web/utils; \
-			rm -f src/most/web/users; \
-			rm -f src/most/web/authentication; \
+
+	@if [ `git -C libs/most status --porcelain` ]; then \
+		echo "CHANGES - most repository not removed"; \
+	else \
+		echo "NO CHANGES - remove most repository"; \
+		rm -fr libs/most; \
+		rm -f src/most/web/utils; \
+		rm -f src/most/web/users; \
+		rm -f src/most/web/authentication; \
 	fi
 
 run:
 
-	cd examples/most; PYTHONPATH=.. python manage.py runserver 0.0.0.0:8000
+	cd examples/most; PYTHONPATH=.. python manage.py runserver 0.0.0.0:9000
 
 
 shell: 

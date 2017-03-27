@@ -1,4 +1,4 @@
-#test.py
+# test.py
 # -*- coding: utf-8 -*-
 
 #
@@ -16,11 +16,11 @@ import logging
 # Get an instance of a logger
 logger = logging.getLogger('most.web.medicalrecord')
 
+
 def ping(request):
-	return HttpResponse("pong")
+    return HttpResponse("pong")
 
-	
-@oauth2_required	
+
+@oauth2_required
 def authenticated_ping(request):
-	return HttpResponse("authenticated pong")
-
+    return HttpResponse("authenticated pong")
