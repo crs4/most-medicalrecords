@@ -39,3 +39,9 @@ class Patient(models.Model):
         return result
 
     full_json_dict = property(_get_full_json_dict)
+
+
+class Configuration(models.Model):
+
+    ehr_service_address = models.CharField(max_length=30, unique=True, blank=False)
+    ehr_service_port = models.CharField(max_length=5, blank=False, default=8080)
