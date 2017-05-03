@@ -26,17 +26,17 @@ class Patient(models.Model):
     def _get_json_dict(self):
         return {
             'uuid': self.uuid,
-            'demographic_uuid': self.demographic_uuid,
-            'ehr_uuid': self.ehr_uuid,
+            'demographic_uuid': self.demographic_uuid
         }
 
     json_dict = property(_get_json_dict)
 
     def _get_full_json_dict(self):
-        result = self.json_dict
-        result.update({
-        })
-        return result
+        return {
+            'uuid': self.uuid,
+            'demographic_uuid': self.demographic_uuid,
+            'ehr_uuid': self.ehr_uuid
+        }
 
     full_json_dict = property(_get_full_json_dict)
 

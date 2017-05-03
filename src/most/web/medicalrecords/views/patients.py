@@ -14,6 +14,7 @@ import logging
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from most.web.authentication.decorators import oauth2_required
+from most.web.medicalrecords.consts import MISSING_PARAMETERS
 from most.web.medicalrecords.models import Patient
 
 # Get an instance of a logger
@@ -38,8 +39,12 @@ def create_patient(request):
     if 'ehr_uuid' in request.REQUEST:
         logger.info('In EHR_UUID')
         patient.ehr_uuid = request.REQUEST['ehr_uuid']
-    if 'demographic_uuid' in request.REQUEST:
-        patient.demographic_uuid = request.REQUEST['demographic_uuid']
+    if 'demographic_uuid' not in request.REQUEST:
+        return HttpResponse(json.dumps({"success": False, "data":
+                                        {"error": "missing demographic_uuid value",
+                                         "code": MISSING_PARAMETERS}}))
+
+    patient.demographic_uuid = request.REQUEST['demographic_uuid']
 
     patient.save()
 
