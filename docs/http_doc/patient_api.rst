@@ -11,13 +11,12 @@ For Server
 -  make sync
 -  make run
 
-For testing API with this notebook
-----------------------------------
-
--  **Requests** library http://docs.python-requests.org/en/latest/
-
 For testing pyEHR API endpoint
 ------------------------------
+
+- To use pyEHR either install pyEHR locally or use docker. If you use docker, pull the image
+  `crs4/pyehr:mongo <https://hub.docker.com/r/crs4/pyehr/>`_
+
 
 -  Download ova VirtualMachine from http://156.148.18.70/files/pyEHR.ova
 -  Run VirtualMachine (virtualbox or vmware importing vmdk virtual disk
