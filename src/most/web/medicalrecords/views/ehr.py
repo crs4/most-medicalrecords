@@ -25,16 +25,10 @@ logger = logging.getLogger('most.web.medicalrecord')
 
 
 def _convert_pyehr_response(response):
-    try:
-        return json.dumps({
-            "success": response["SUCCESS"],
-            "record": response["RECORD"],
-        })
-    except KeyError:
-        return json.dumps({
-            "success": response["SUCCESS"],
-            "error": response["ERROR"]
-        })
+    res = {}
+    for k, v in response.iteritems():
+        res[k.lower()] = v
+    return json.dumps(res)
 
 
 def make_url(base_url, endpoint):
@@ -167,7 +161,7 @@ def delete_ehr_record_for_patient(request, patient_uuid, record_uuid, base_pyehr
                                       '/ehr/{patient_id}/{ehr_record_id}/{delete_method}'.
                                       format(patient_id=patient.ehr_uuid, ehr_record_id=record_uuid,
                                              delete_method=delete_method)))
-    return HttpResponse(result.text)
+    return HttpResponse(_convert_pyehr_response(result.json()))
 
 
 @oauth2_required

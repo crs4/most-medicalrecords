@@ -228,10 +228,11 @@ EHR
             }
         }
 
-.. http:post:: /ehr/(string:patient_uuid)/records/(string:record_uuid)/
 
-    Save a new ehr record with id (record_uuid) to the (patient_uuid) ehr. The (record_uuid) is optional. If it's not
-    provided it is created by the system.
+
+.. http:post:: /ehr/(string:patient_uuid)/records/
+
+    Save a new ehr record to the ehr of the patient with id patient_uuid. The record id is created by the system.
     The data of the request must be a JSON encoded openEHR archetype.
 
     :reqheader Content-Type: application/json
@@ -270,6 +271,11 @@ EHR
             },
             "success": true
         }
+
+
+.. http:post:: /ehr/(string:patient_uuid)/records/(string:record_uuid)/
+
+    Same as the previous function but in this case the record_uuid is provided by the client.
 
 
 .. http:get:: /ehr/(string:patient_uuid)/records/(string:record_uuid)/
@@ -313,19 +319,6 @@ EHR
     .. sourcecode:: json
 
         {
-            "record": {
-                "ehr_data": {
-                    "archetype_class": "openEHR.TEST-EVALUATION.v1",
-                    "archetype_details": {
-                        "at0001": "val1",
-                        "at0002": "val2"
-                    }
-                },
-                "creation_time": 1399905956.765149,
-                "last_update": 1399905956.765149,
-                "record_id": "9a30f6b6a36b49c6b16e249ef35445eb",
-                "active": true,
-                "version": 1,
-            },
+            "message": "EHR record with ID cf629c7c51b740fb9776f8c4cc51f293 successfully hidden",
             "success": true
         }
