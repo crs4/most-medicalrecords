@@ -43,5 +43,5 @@ urlpatterns += patterns('most.web.medicalrecords.views.ehr',
                         )
 
 urlpatterns += patterns('most.web.medicalrecords.views.patients',
-                        (r'^demographic/(?P<demographic_uuid>.*)/$', 'get_patient_by_demographic'),
+                        (r'^demographic/(?P<demographic_uuid>.*)/$', 'get_patient_by_demographic_id'),
                         )
