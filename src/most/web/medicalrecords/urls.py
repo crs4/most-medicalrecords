@@ -30,19 +30,18 @@ urlpatterns += patterns('most.web.medicalrecords.views.ehr',
                         (r'^ehr/status/$', 'get_status'),  # Get Status of pyehr dbservice service
 
                         verb_url('GET', r'^ehr/(?P<patient_uuid>.*)/records/(?P<record_uuid>.*)/$',
-                                 'get_ehr_record_for_patient'),
+                                 'get_ehr_record_for_patient'), #
                         verb_url('POST', r'^ehr/(?P<patient_uuid>.*)/records/(?P<record_uuid>.*)/$',
                                  'create_ehr_record_for_patient'),
                         verb_url('POST', r'^ehr/(?P<patient_uuid>.*)/records/$', 'create_ehr_record_for_patient'),
                         verb_url('DELETE', r'^ehr/(?P<patient_uuid>.*)/records/(?P<record_uuid>.*)/$',
                                  'delete_ehr_record_for_patient'),
 
-                        verb_url('POST', r'^ehr/(?P<patient_uuid>.*)/$', 'create_ehr_patient'),
-                        verb_url('GET', r'^ehr/(?P<patient_uuid>.*)/$', 'get_ehr_patient'),
-                        verb_url('DELETE', r'^ehr/(?P<patient_uuid>.*)/$', 'delete_ehr_patient'),
+                        verb_url('POST', r'^ehr/(?P<patient_uuid>.*)/$', 'create_ehr_patient'), #
+                        verb_url('GET', r'^ehr/(?P<patient_uuid>.*)/$', 'get_ehr_patient'), #
+                        verb_url('DELETE', r'^ehr/(?P<patient_uuid>.*)/$', 'delete_ehr_patient'), #
                         )
 
 urlpatterns += patterns('most.web.medicalrecords.views.patients',
-                        (r'^demographic/(?P<demographic_id>\d+)/$', 'get_patients'),
-
+                        (r'^demographic/(?P<demographic_uuid>.*)/$', 'get_patient_by_demographic'),
                         )

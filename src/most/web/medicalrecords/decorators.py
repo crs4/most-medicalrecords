@@ -9,6 +9,7 @@ def check_pyehr_conf(f):
         except Configuration.DoesNotExist:
             return HttpResponse("Cannot find pyehr service configuration")
         url = "http://{addr}:{port}/".format(addr=pyehr_conf.ehr_service_address, port=pyehr_conf.ehr_service_port)
+        print "pyehr url: " + url
         kwargs["base_pyehr_url"] = url
         return f(*args, **kwargs)
     return wrapper

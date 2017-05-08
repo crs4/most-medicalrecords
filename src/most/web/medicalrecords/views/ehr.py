@@ -16,11 +16,25 @@ import requests
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from most.web.authentication.decorators import oauth2_required
+from most.web.medicalrecords.consts import PATIENT_NOT_EXISTS
 from most.web.medicalrecords.models import Patient
 from most.web.medicalrecords.decorators import check_pyehr_conf
 
 # Get an instance of a logger
 logger = logging.getLogger('most.web.medicalrecord')
+
+
+def _convert_pyehr_response(response):
+    try:
+        return json.dumps({
+            "success": response["SUCCESS"],
+            "record": response["RECORD"],
+        })
+    except KeyError:
+        return json.dumps({
+            "success": response["SUCCESS"],
+            "error": response["ERROR"]
+        })
 
 
 def make_url(base_url, endpoint):
@@ -51,8 +65,8 @@ def get_status(request, base_pyehr_url=None):
 def _get_ehr_patient(base_pyehr_url, ehr_patient_id):
     raw_result = requests.get(make_url(base_pyehr_url, '/patient/{patient_id}'.format(patient_id=ehr_patient_id)),
                               params={'fetch_ehr_records': False})
-    result = json.loads(raw_result.text)
-    return result
+    result = raw_result.json()
+    return _convert_pyehr_response(result)
 
 
 @oauth2_required
@@ -62,9 +76,9 @@ def get_ehr_patient(request, patient_uuid, base_pyehr_url=None):
 
     if not ehr_uuid:
         return HttpResponse(
-            json.dumps({"success": False, "errordata": {'code': 501, 'message': 'request patient does not exists'}}))
+            json.dumps({"success": False, "errordata": {'code': PATIENT_NOT_EXISTS, 'message': 'request patient does not exists'}}))
     result = _get_ehr_patient(base_pyehr_url, ehr_uuid)
-    return HttpResponse(json.dumps(result))
+    return HttpResponse(result)
 
 
 @oauth2_required
@@ -76,11 +90,13 @@ def get_ehr_record_for_patient(request, patient_uuid, record_uuid, base_pyehr_ur
 
     if not ehr_uuid:
         return HttpResponse(
-            json.dumps({"success": False, "errordata": {'code': 501, 'message': 'request patient does not exists'}}))
+            json.dumps({"success": False, "errordata": {'code': PATIENT_NOT_EXISTS,
+                                                        'message': 'request patient does not exists'}}))
 
     result = requests.get(
-        make_url(base_pyehr_url, '/ehr/{patient_id}/{ehr_record_id}'.format(patient_id=ehr_uuid, ehr_record_id=record_uuid)))
-    return HttpResponse(result.text)
+        make_url(base_pyehr_url,
+                 '/ehr/{patient_id}/{ehr_record_id}'.format(patient_id=ehr_uuid, ehr_record_id=record_uuid)))
+    return HttpResponse(_convert_pyehr_response(result.json()))
 
 
 @csrf_exempt
@@ -92,7 +108,7 @@ def create_ehr_patient(request, patient_uuid, base_pyehr_url=None):
         patient = Patient.objects.get(uuid=patient_uuid)
     except Patient.DoesNotExist:
         return HttpResponse(
-            json.dumps({"success": False, "errordata": {'code': 501, 'message': 'request patient does not exists'}}))
+            json.dumps({"success": False, "errordata": {'code': PATIENT_NOT_EXISTS, 'message': 'request patient does not exists'}}))
 
     result = requests.put(make_url(base_pyehr_url, '/patient'), json={'patient_id': patient.ehr_uuid})
 
@@ -100,7 +116,7 @@ def create_ehr_patient(request, patient_uuid, base_pyehr_url=None):
         return HttpResponse(
             json.dumps({"success": False, "errordata": {'code': 502, 'message': 'ehr patient already exists'}}))
     else:
-        return HttpResponse(result.text)
+        return HttpResponse(_convert_pyehr_response(result.json()))
 
 
 @csrf_exempt
@@ -115,7 +131,8 @@ def create_ehr_record_for_patient(request, patient_uuid, base_pyehr_url=None, re
         patient = Patient.objects.get(uuid=patient_uuid)
     except Patient.DoesNotExist:
         return HttpResponse(
-            json.dumps({"success": False, "errordata": {'code': 501, 'message': 'request patient does not exists'}}))
+            json.dumps({"success": False, "errordata": {'code': PATIENT_NOT_EXISTS,
+                                                        'message': 'request patient does not exists'}}))
 
     data = {
         'patient_id': patient.ehr_uuid,
@@ -129,7 +146,7 @@ def create_ehr_record_for_patient(request, patient_uuid, base_pyehr_url=None, re
     logger.info(data)
 
     result = requests.put(make_url(base_pyehr_url, '/ehr'), json=data)
-    return HttpResponse(result.text)
+    return HttpResponse(_convert_pyehr_response(result.json()))
 
 
 @oauth2_required
@@ -144,7 +161,7 @@ def delete_ehr_record_for_patient(request, patient_uuid, record_uuid, base_pyehr
         patient = Patient.objects.get(uuid=patient_uuid)
     except Patient.DoesNotExist:
         return HttpResponse(
-            json.dumps({"success": False, "errordata": {'code': 501, 'message': 'request patient does not exists'}}))
+            json.dumps({"success": False, "errordata": {'code': PATIENT_NOT_EXISTS, 'message': 'request patient does not exists'}}))
 
     result = requests.delete(make_url(base_pyehr_url,
                                       '/ehr/{patient_id}/{ehr_record_id}/{delete_method}'.
@@ -163,12 +180,11 @@ def delete_ehr_patient(request, patient_uuid, base_pyehr_url=None):
 
     try:
         patient = Patient.objects.get(uuid=patient_uuid)
-
     except Patient.DoesNotExist:
         return HttpResponse(
-            json.dumps({"success": False, "errordata": {'code': 501, 'message': 'request patient does not exists'}}))
+            json.dumps({"success": False, "errordata": {'code': PATIENT_NOT_EXISTS, 'message': 'request patient does not exists'}}))
 
     result = requests.delete(make_url(base_pyehr_url,
                                       '/patient/{patient_id}/{delete_method}'.
                                       format(patient_id=patient.ehr_uuid, delete_method=delete_method)))
-    return HttpResponse(result.text)
+    return HttpResponse(_convert_pyehr_response(result.json()))

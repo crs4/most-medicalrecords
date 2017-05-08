@@ -14,11 +14,11 @@ import logging
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from most.web.authentication.decorators import oauth2_required
-from most.web.medicalrecords.consts import MISSING_PARAMETERS
+from most.web.medicalrecords.consts import MISSING_PARAMETERS, PATIENT_NOT_EXISTS
 from most.web.medicalrecords.models import Patient
 
 # Get an instance of a logger
-logger = logging.getLogger('most.web.medicalrecord')
+logger = logging.getLogger("most.web.medicalrecord")
 
 
 @oauth2_required
@@ -33,18 +33,18 @@ def get_patients(request):
 @csrf_exempt
 @oauth2_required
 def create_patient(request):
-    logger.info('In create_patient')
+    logger.info("In create_patient")
     patient = Patient()
     patient.taskgroup = request.taskgroup
-    if 'ehr_uuid' in request.REQUEST:
-        logger.info('In EHR_UUID')
-        patient.ehr_uuid = request.REQUEST['ehr_uuid']
-    if 'demographic_uuid' not in request.REQUEST:
-        return HttpResponse(json.dumps({"success": False, "data":
-                                        {"error": "missing demographic_uuid value",
+    if "ehr_uuid" in request.REQUEST:
+        logger.info("In EHR_UUID")
+        patient.ehr_uuid = request.REQUEST["ehr_uuid"]
+    if "demographic_uuid" not in request.REQUEST:
+        return HttpResponse(json.dumps({"success": False, "errordata":
+                                        {"message": "missing demographic_uuid value",
                                          "code": MISSING_PARAMETERS}}))
 
-    patient.demographic_uuid = request.REQUEST['demographic_uuid']
+    patient.demographic_uuid = request.REQUEST["demographic_uuid"]
 
     patient.save()
 
@@ -57,9 +57,22 @@ def get_patient(request, patient_uuid):
         patient = Patient.objects.get(uuid=patient_uuid)
     except Patient.DoesNotExist:
         return HttpResponse(
-            json.dumps({"success": False, "errordata": {'code': 501, 'message': 'request patient does not exists'}}))
+            json.dumps({"success": False, "errordata": {"code": PATIENT_NOT_EXISTS,
+                                                        "message": "request patient does not exists"}}))
 
     return HttpResponse(json.dumps({"success": True, "patient": patient.json_dict}))
+
+@oauth2_required
+def get_patient_by_demographic_id(request, demographic_uuid):
+    try:
+        patient = Patient.objects.get(demographic_uuid=demographic_uuid)
+    except Patient.DoesNotExist:
+        return HttpResponse(
+            json.dumps({"success": False, "errordata": {"code": PATIENT_NOT_EXISTS,
+                                                        "message": "request patient does not exists"}}))
+
+    return HttpResponse(json.dumps({"success": True, "patient": patient.json_dict}))
+
 
 
 @csrf_exempt
@@ -69,15 +82,14 @@ def update_patient(request, patient_uuid):
         patient = Patient.objects.get(uuid=patient_uuid)
     except Patient.DoesNotExist:
         return HttpResponse(
-            json.dumps({"success": False, "errordata": {'code': 501, 'message': 'request patient does not exists'}}))
+            json.dumps({"success": False, "errordata": {"code": PATIENT_NOT_EXISTS,
+                                                        "message": "request patient does not exists"}}))
 
-    if 'ehr_uuid' in request.REQUEST:
-        logger.info('In EHR_UUID')
-        patient.ehr_uuid = request.REQUEST['ehr_uuid']
-    elif 'demographic_uuid' in request.REQUEST:
-        patient.demographic_uuid = request.REQUEST['demographic_uuid']
+    if "demographic_uuid" in request.REQUEST:
+        patient.demographic_uuid = request.REQUEST["demographic_uuid"]
     else:
-        return HttpResponse(json.dumps({"success": False, "error": {'code': 502, 'message': 'no data'}}))
+        return HttpResponse(json.dumps({"success": False, "error": {"code": MISSING_PARAMETERS,
+                                                                    "message": "missing demographic_uuid value"}}))
 
     patient.save()
 
@@ -90,7 +102,8 @@ def delete_patient(request, patient_uuid):
         patient = Patient.objects.get(uuid=patient_uuid)
     except Patient.DoesNotExist:
         return HttpResponse(
-            json.dumps({"success": False, "errordata": {'code': 501, 'message': 'request patient does not exists'}}))
+            json.dumps({"success": False, "errordata": {"code": PATIENT_NOT_EXISTS,
+                                                        "message": "request patient does not exists"}}))
     data = patient.json_dict
     patient.delete()
 

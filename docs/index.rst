@@ -3,25 +3,20 @@ Welcome to MOST-medicalrecord's service documentation!
 
 Welcome to the documentation for most-medicalrecord |release|.
 
-This library, part of the MOST project <http://github.com/crs4/most> is developed with the aim of providing a frontend REST api access to demographics and clinical data of patients. 
+This package, part of the MOST project <http://github.com/crs4/most>, is developed with the aim of providing a frontend
+REST API access to clinical data of patients. The library is developed as a `Django <https://www.djangoproject.com/>`_
+application.
 
-Type of data:
--------------
-
-* **demographics**: You can use the internal most backend for demographic data management (most-demographics) or use external systems via standard protocols calls (HL7)
-
-* **ehr data**: for clinical data management (creation, save, retrieve and query) the library use an external toolkit (pyEhr, developed by CRS4) that deals with the management of clinical data using openEHR standards.
+The clinical data are represented as openEHR archetype serialized using JSON and are managed using `pyEHR <https://github.com/crs4/pyehr>`_
 
 Contents:
 ---------
 .. toctree::
-   :maxdepth: 5
+    :maxdepth: 5
 
-   REST API tutorials<http_doc/REST API.rst>
-   REST EHR API tutorials<http_doc/EHR API.rst>
-   http_doc/medicalrecord
-
-
+    http_doc/medicalrecord
+    REST PATIENT API tutorial<http_doc/patient_api.rst>
+    REST EHR API tutorial<http_doc/ehr_api.rst>
 
 Indices and tables
 ==================
