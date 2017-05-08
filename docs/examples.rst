@@ -16,7 +16,8 @@ Run and configure the server
 
 To run the server launch the following commands from the main repository dir::
 
-    make devel # it will install dependency projects and initiliaze the database
+    make devel # it will install dependency projects
+    make sync # initiliaze the database
     make run # it will launch the web/rest server on 0.0.0.0:9000
 
 After this, you will need to connect to `the admin page <http://localhost:9000>`_ and, after logging in using admin/admin

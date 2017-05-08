@@ -6,7 +6,9 @@ devel:
 
 	echo "link libs"
 
-	cd src/most/web ; ln -fs ../../../libs/most/src/most/web/utils utils; ln -fs ../../../libs/most/src/most/web/users users ; \
+	cd src/most/web ;  \
+	ln -fs ../../../libs/most/src/most/web/utils utils; \
+	ln -fs ../../../libs/most/src/most/web/users users ; \
 	ln -fs ../../../libs/most/src/most/web/authentication authentication;
 
 	cd examples; ln -fs ../libs/most/src/provider provider;
@@ -32,16 +34,17 @@ run:
 
 	cd examples/most; PYTHONPATH=.. python manage.py runserver 0.0.0.0:9000
 
-
 shell: 
 
 	cd examples/most; PYTHONPATH=.. python manage.py shell
 
 sync:
 
+	cd examples/most; PYTHONPATH=.. python manage.py makemigrations
 	cd examples/most; PYTHONPATH=.. python manage.py migrate
 
 dump:
+
 	@cd examples/most; PYTHONPATH=.. python manage.py dumpdata --exclude contenttypes --exclude auth --exclude sessions --exclude admin --natural-foreign
 
 test:
