@@ -40,7 +40,7 @@ shell:
 
 sync:
 
-	cd examples/most; PYTHONPATH=.. python manage.py makemigrations
+	#cd examples/most; PYTHONPATH=.. python manage.py makemigrations
 	cd examples/most; PYTHONPATH=.. python manage.py migrate
 
 dump:
