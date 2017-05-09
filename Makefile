@@ -14,7 +14,7 @@ devel:
 	cd examples; ln -fs ../libs/most/src/provider provider;
 
 	echo "copy settings to examples"
-	@if ! [ -d examples/most/main/settings.py ]; then cp examples/most/main/settings.py.conf examples/most/main/settings.py; fi
+	@if ! [ -d examples/most/main/settings.py ]; then cp examples/most/main/settings.py.example examples/most/main/settings.py; fi
 	
 clean:
 
